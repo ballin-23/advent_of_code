@@ -14,19 +14,43 @@ def handleInstructionPart1(direction, num, verticalPosition, horizontalPosition)
         verticalPosition -= num
     return verticalPosition, horizontalPosition
 
+def handleInstructionPart2(direction, num, verticalPosition, horizontalPosition, aim):
+    if direction == "forward":
+        horizontalPosition += num
+        verticalPosition += (aim * num)
+    elif direction == "down":
+        aim += num
+    else:
+        aim -= num
+    return verticalPosition, horizontalPosition, aim   
+
 instructionArr = readFile("input.txt")
 
-def determine_position(func):
+# def determine_position(func):
+#     verticalPosition = 0
+#     horizontalPosition = 0
+
+#     for instruction in instructionArr:
+#         tokenizedInstruction = instruction.split()
+#         direction = tokenizedInstruction[0]
+#         num = int(tokenizedInstruction[1])
+#         verticalPosition, horizontalPosition = func(direction, num, verticalPosition, horizontalPosition)
+#     print("vertical position: ",verticalPosition,"horizontal position", horizontalPosition)
+#     print(horizontalPosition * verticalPosition)
+#     return horizontalPosition * verticalPosition
+
+def determine_position():
     verticalPosition = 0
     horizontalPosition = 0
+    aim = 0
 
     for instruction in instructionArr:
         tokenizedInstruction = instruction.split()
         direction = tokenizedInstruction[0]
         num = int(tokenizedInstruction[1])
-        verticalPosition, horizontalPosition = func(direction, num, verticalPosition, horizontalPosition)
-    print("vertical position: ",verticalPosition,"horizontal position", horizontalPosition)
+        verticalPosition, horizontalPosition, aim = handleInstructionPart2(direction, num, verticalPosition, horizontalPosition, aim)
+    print("vertical position: ",verticalPosition,"horizontal position", horizontalPosition, " aim: ", aim)
     print(horizontalPosition * verticalPosition)
     return horizontalPosition * verticalPosition
 
-determine_position(handleInstructionPart1)
+determine_position()
