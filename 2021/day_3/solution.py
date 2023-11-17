@@ -87,6 +87,7 @@ def analyzeReportByElimination(reportNumbers):
     print(oxygen)
     print(carbon)
     print(carbon * oxygen)
+    return carbon * oxygen
 
 
 
