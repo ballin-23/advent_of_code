@@ -8,28 +8,16 @@ def readFile(path):
 reportNumbers = readFile("input.txt")
 
 def analyzeReport(reportNumbers):
-    mostCommonBits = ""
-    leastCommonBits = ""
-    # get the column
+    mostCommonBits, leastCommonBits = "", ""
     for i in range(len(reportNumbers[0])):
-        ones = 0
-        zeroes = 0
-        for j in range(len(reportNumbers)):
-            digit = int(reportNumbers[j][i])
-            if digit == 1:
-                ones += 1
-            else:
-                zeroes += 1
-        if (ones > zeroes):
+        onesMostCommon = oneMostCommon(reportNumbers, i)
+        if (onesMostCommon):
             mostCommonBits += "1"
             leastCommonBits += "0"
         else:
             mostCommonBits += "0"
             leastCommonBits += "1"
-    print(mostCommonBits)
-    print(leastCommonBits)
     answer = int(mostCommonBits, 2) * int(leastCommonBits, 2)
-    print(answer)
     return answer
 
 def oneMostCommon(reportNumbers, index):
@@ -59,10 +47,8 @@ def pruneList(reportNumbers, numberNotToRemove, index):
         if int(reportNumbers[i][index]) == int(numberNotToRemove):
             continue
         else:
-            print('else: ', reportNumbers[i][index])
             reportNumbers[i] = float('inf')
     reportNumbers = [element for element in reportNumbers if element != float('inf')]
-    print("pruned: ",reportNumbers)
     return reportNumbers
 
 
@@ -84,13 +70,11 @@ def analyzeReportByElimination(reportNumbers):
             else:
                 copy = pruneList(copy, 1, i)
     carbon = int(copy[0], 2)
-    print(oxygen)
-    print(carbon)
-    print(carbon * oxygen)
     return carbon * oxygen
 
 
 
-
-# analyzeReport(reportNumbers)
+# part 1
+analyzeReport(reportNumbers)
+# part 2
 analyzeReportByElimination(reportNumbers)
