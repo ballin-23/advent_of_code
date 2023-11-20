@@ -162,11 +162,39 @@ def sumCard(card):
     return sum
 
 
+# def solve():
+#     bingoNumbers, cards = readBingo("input.txt")
+#     realBingoNumbers = bingoNumbers[0].split(',')
+#     print(realBingoNumbers)
+#     for num in realBingoNumbers:
+#         print("current num: ", num)
+#         cards = updateBoard(cards, num)
+#         print("updated")
+#         for card in cards:
+#             print("card")
+#             for row in card:
+#                 print(row)
+#             print("---")
+#         print("---")
+#         for card in cards:
+#             for row in card:
+#                 print(row)
+#             isWinner = checkBoardForWinner(card)
+#             if (isWinner):
+#                 print("found a winner")
+#                 sumOfCard = sumCard(card)
+#                 print(sumOfCard)
+#                 print(int(num))
+#                 print(sumOfCard * int(num))
+#                 return
+
+# part 2
 def solve():
     bingoNumbers, cards = readBingo("input.txt")
     realBingoNumbers = bingoNumbers[0].split(',')
     print(realBingoNumbers)
     for num in realBingoNumbers:
+        print("number of cards: ", len(cards))
         print("current num: ", num)
         cards = updateBoard(cards, num)
         print("updated")
@@ -176,17 +204,31 @@ def solve():
                 print(row)
             print("---")
         print("---")
-        for card in cards:
-            for row in card:
+        cardsToRemove = []
+        for i in range(len(cards)):
+            for row in cards[i]:
                 print(row)
-            isWinner = checkBoardForWinner(card)
+            isWinner = checkBoardForWinner(cards[i])
             if (isWinner):
-                print("found a winner")
-                sumOfCard = sumCard(card)
-                print(sumOfCard)
-                print(int(num))
-                print(sumOfCard * int(num))
-                return
+                if len(cards) == 1:
+                    print("found last winner")
+                    sumOfCard = sumCard(card)
+                    print(sumOfCard)
+                    print(int(num))
+                    print(sumOfCard * int(num))
+                    return
+                else:
+                    print("found a winner but we keep going")
+                    cardsToRemove.append(i)
+        print("indices to remove: ", cardsToRemove)
+        newCards = []
+        for i in range(len(cards)):
+            if i in cardsToRemove:
+                continue
+            else:
+                newCards.append(cards[i])
+        cards = newCards
+        cardsToRemove = []
         
     
 
