@@ -47,8 +47,35 @@ def getCoordinates(x1, y1, x2, y2):
             ranges = list(range(x1, x2+1))
         for num in ranges:
             coords.append([num, y1])
-    # print(coords)
+    else:
+        diagnolLines = handleDiagnolLines(x1, y1, x2, y2)
+        coords.extend(diagnolLines)
     return coords
+
+def handleDiagnolLines(x1, y1, x2, y2):
+    arr = [[x1, y1]]
+    if x1 < x2 and y1 < y2:
+        while x1 != x2:
+            x1 += 1
+            y1 += 1
+            arr.append([x1, y1])
+    elif x1 > x2 and y1 < y2:
+        while x1 != x2:
+            x1 -= 1
+            y1 += 1
+            arr.append([x1, y1])
+    elif x1 < x2 and y1 > y2:
+        while x1 != x2:
+            x1 += 1
+            y1 -= 1
+            arr.append([x1, y1])
+    elif x1 > x2 and y1 > y2:
+        while x1 != x2:
+            x1 -= 1
+            y1 -= 1
+            arr.append([x1, y1])
+    return arr
+
 
 def updateGrid(coordinates, grid):
     for coordinate in coordinates:
@@ -67,3 +94,4 @@ def scanGrid(grid):
 
 readFile()
 # getCoordinates(0,9,2,9)
+# handleDiagnolLines(9,7,7,9)
