@@ -23,9 +23,9 @@ def readFile(path):
 #             total *= 2
 #         return total
 
-def handleCard(card):
+def getMatches(card):
     winNumbArr,inputNumsArr = parseCard(card)
-    return getMatches(winNumbArr, inputNumsArr)
+    return compareCards(winNumbArr, inputNumsArr)
 
 def parseCard(card):
     splitCard = card.split("|")
@@ -34,7 +34,7 @@ def parseCard(card):
     inputNumsArr = splitCard[1].split()
     return winNumbArr, inputNumsArr
 
-def getMatches(winNumsArr, inputNumsArr):
+def compareCards(winNumsArr, inputNumsArr):
     matches = 0
     for num in inputNumsArr:
         if num in winNumsArr:
@@ -67,7 +67,7 @@ input = readFile("input.txt")
 cards = createCardsDictionary(input)
 currentCard = 1
 for card in input:
-    matches = handleCard(card)
+    matches = getMatches(card)
     cards = handleMatches(matches, currentCard, cards)
     currentCard += 1
 
