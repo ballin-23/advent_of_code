@@ -40,11 +40,13 @@ def extrapolate(sequence):
     return pattern
 
 def solve(sequence, pattern):
-    count = 0
+    prev = 0
     for i in range(len(pattern)):
-        count += pattern[i][-1]
-    total = sequence[-1] + count
-    print("total: ", total)
+        # print("pattern: ", pattern)
+        prev =  pattern[i][0] - prev
+        # print("prev: ", prev)
+    total = sequence[0] - prev
+    # print("total: ", total)
     return total
 
 answer = 0
@@ -55,3 +57,13 @@ for sequence in sequences:
     extrapolatedNum = solve(sequence, pattern)
     answer += extrapolatedNum
 print(answer)
+
+
+# answer = 0
+# input = readFile()
+# sequences = getSequences(input)
+# for sequence in sequences:
+#     pattern = extrapolate(sequence)
+#     extrapolatedNum = solve(sequence, pattern)
+#     answer += extrapolatedNum
+# print(answer)
