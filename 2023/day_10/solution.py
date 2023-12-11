@@ -22,42 +22,53 @@ def findStartingPoint(matrix):
             coords = (i, matrix[i].index("S"))
     return coords
 
-def getValidChildren(matrix, current):
-    if matrix[current[0]][current[1]] == "S":
-        return getChildrenFromStart(matrix, current)
-    else:
-        translateValueAndGetChildren(matrix, current)
+def bfs(matrix, start):
+    seen = []
+    nodesToVisit = [start]
 
-def getChildrenFromStart(matrix, current):
-    row = current[0]
-    position = current[1]
-    children = []
-    # check row below
-    if row - 1 >= 0:
-        children.append(matrix[row-1][position])
-    # check row above
-    if row + 1 < len(matrix):
-        children.append(matrix[row+1][position])
-    # check left
+    while len(nodesToVisit) > 0:
+        currentNode = nodesToVisit.pop(-1)
+        if currentNode not in seen:
+            seen.append(currentNode)
+            children = exploreNode(matrix, currentNode[0], currentNode[1], seen)
+            # print("children: ",children)
+            nodesToVisit.extend(children)
+            # print("nodes to visit: ",nodesToVisit)
+    # print('seen: ', seen)
+    return seen
+
+def exploreNode(matrix, row, position, seen):
+    discovered = []
+    currentValue = matrix[row][position]
+    print("current value: ", currentValue)
+    print("matrix: ", row,",",position, " value: ", currentValue)
+    # check if we can go up and if the row above can recieve upwards motion
+    if row-1 >= 0:
+        if currentValue in "S|LJ" and matrix[row-1][position] in "|7F" and (row-1, position) not in seen:
+            discovered.append((row-1, position))
+    # check the row below
+    if row+1 < len(matrix):
+        if currentValue in "S|7F" and matrix[row+1][position] in "|LJ" and (row+1, position) not in seen:
+            print("here")
+            discovered.append((row+1, position))
+    # check the position to the left
     if position - 1 >= 0:
-        children.append(matrix[row][position-1])
-    if position + 1 > len(matrix[0]):
-        children.append(matrix[row][position+1])
-    filteredChildren = [child for child in children if child != "."]
-    print("current: ", current, " children: ",filteredChildren)
-    return filteredChildren
-
-# we need the start to detect a cycle
-def dfs(matrix, current, visited, start):
-    if current not in visited:
-        visited.append(current)
-        children = getValidChildren(current)
-        for child in children:
-            dfs(matrix, child, visited, start)
+        if currentValue in "S-J7" and matrix[row][position-1] in "-FL" and (row, position-1) not in seen:
+            discovered.append((row, position-1))
+    # check the position to the right
+    if position + 1 < len(matrix[row]):
+        if currentValue in "S-FL" and matrix[row][position+1] in "-J7" and (row, position+1) not in seen:
+            discovered.append((row, position+1))
+    # print("returning discovered: ",discovered)
+    return discovered
 
 def solvePart1():
+    global counter
     input = readFile()
     matrix = createMatrix(input)
     startingPoint = findStartingPoint(matrix)
-    print("starting point: ",startingPoint)
-    # from here we dfs and find our loop
+    print(startingPoint)
+    path = bfs(matrix, startingPoint)
+    print(len(path)//2)
+
+solvePart1()
