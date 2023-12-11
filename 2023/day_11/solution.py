@@ -97,6 +97,20 @@ def bfs(matrix, start, end):
 def manhattanDistance(x1, y1, x2, y2):
     return abs(x2-x1) + abs(y2-y1)
 
+def manhattanDistanceV2(x1, y1, x2, y2, expansion, emptyRows, emptyCols):
+    answer = 0
+    for i in range(min(x1, x2), max(x1, x2)):
+        if i in emptyRows:
+            answer += expansion
+        else:
+            answer += 1
+    for i in range(min(y1, y2), max(y1, y2)):
+        if i in emptyCols:
+            answer += expansion
+        else:
+            answer += 1
+    return answer
+
 def solvePart1():
     galaxies = createGalaxies()
     new_galaxies = expand(galaxies)
@@ -106,3 +120,34 @@ def solvePart1():
     for i in range(len(pairs)):
         total += manhattanDistance(pairs[i][0][0], pairs[i][0][1], pairs[i][1][0], pairs[i][1][1])
     return total
+
+def getEmptyRows(galaxies):
+    empty = []
+    for index, row in enumerate(galaxies):
+        if "#" not in row:
+            empty.append(index)
+    print(empty)
+    return empty
+
+def getEmptyCols(galaxies):
+    empty = []
+    for index, column in enumerate(zip(*galaxies)):
+        if "#" not in column:
+            empty.append(index)
+    print(empty)
+    return empty
+
+def solvePart2():
+    galaxies = createGalaxies()
+    print(galaxies)
+    emptyRows = getEmptyRows(galaxies)
+    emptyCols = getEmptyCols(galaxies)
+    coords = getGalaxyCoords(galaxies)
+    pairs = generatePairs(coords)
+    total = 0
+    for i in range(len(pairs)):
+        total += manhattanDistanceV2(pairs[i][0][0], pairs[i][0][1], pairs[i][1][0], pairs[i][1][1], 1000000, emptyRows, emptyCols)
+    print(total)
+    return total
+
+solvePart2()
